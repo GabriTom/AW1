@@ -27,48 +27,59 @@ function FilmLibrary(){
         }
     }
 
-    this.sortByDate()=function(){
-        let i, j, k, film;
-        let ret=[];
-        for(i=0; i<this.films.lenght; i++){
-            film=this.films[i];
-            if(film.date==null){
-                //E' giusto questo continue???
-                continue;
+    this.sortByDate=function(){
+        let retV=[], retNV=[];
+        for(let f of this.films){
+            if(f.date==null){
+                retNV.push(f)
+            }else{
+                retV.push(f)
             }
-            k=i;
-            for (j=i+1; j<this.films.lenght; j++){
-                if(this.films[i].date.diff(this.films[j].date)>0){
-                    film=this.films[j];
-                    k=j;
+        }
+        for(let i=0; i<retV.length; i++){
+            for(let j=i+1; j<retV.length; j++){
+                if(retV[i].date.diff(retV[j].date)>0){
+                    let f=retV[j];
+                    retV[j]=retV[i];
+                    retV[i]=f;
                 }
             }
-            ret.push(film);
-            this.films.splice(k);
         }
-        return ret;
+        return retV.concat(retNV);
     };
 
-    this.deleteFilm(fId)=function(){
-        for(let i=0; i<this.films.length; i++){
-            if(this.films[i].id==fid){
-                this.films.splice(i);
+    this.deleteFilm=function(fId){
+        let i, found=false;
+        for(i=0; i<this.films.length; i++){
+            if(this.films[i].id==fId){
+                found=true;
                 break;
             }
+        }
+        if(found){
+            let v1=[], v2=[];
+            v1=this.films.slice(0, i);
+            v2=this.films.slice(i+1, this.films.length);
+            return v1.concat(v2);
         }
         console.log(`No film with ID= ${fId}`);
     };
 
-    this.resetWatchedFilms()=function(){
+    this.resetWatchedFilms=function(){
         for(let i=0; i<this.films.length; i++){
-            if(this.films[i].score!=null){
+            if(this.films[i].score!=null || this.films[i].date!=null){
                 this.films[i].score=null;
+                this.films[i].date=null;
             }
         }
     };
 
-    this.getRated()=function(){
-        return this.films.filter((e)=>e.score!=null);
+    this.getRated=function(){
+        return this.films.filter((e)=>{
+            if(e!=null && e.date!=null){
+                return e;
+            }
+        });
     };
 }
 
@@ -76,7 +87,7 @@ const f1 = new Film(1, "Pulp Fiction", true, dayjs("03/10/2023"), 5);
 const f2 = new Film(2, "21 Grams", true, dayjs("03/17/2023"), 5);
 const f3 = new Film(3, "Star Wars", false);
 const f4 = new Film(4, "Matrix", false);
-const f5 = new Film(5, "Shrek", false, dayjs("21/03/2023"), 5);
+const f5 = new Film(5, "Shrek", false, dayjs("03/21/2023"), 5);
 const fl = new FilmLibrary();
 fl.addNewFilm(f1);
 fl.addNewFilm(f2);
@@ -87,10 +98,8 @@ fl.addNewFilm(f5);
 fl.str();
 
 //Extension - Es2
-
-fl.sortByDate().str();
-fl.deleteFilm(3);
-fl.str();
-fl.getRated().str();
-fl.resetWatchedFilms();
-fl.str();
+console.log("------------------ Es 2 ------------------");
+let ordered=fl.sortByDate();
+let deleted=fl.deleteFilm(3);
+let rated=fl.getRated();
+let reseted=fl.resetWatchedFilms();
