@@ -27,10 +27,49 @@ function FilmLibrary(){
         }
     }
 
-    this.sortByDate()=function(){};
-    this.deletedFilms()=function(){};
-    this.resetWatchedFilms()=function(){};
-    this.getRated()=function(){};
+    this.sortByDate()=function(){
+        let i, j, k, film;
+        let ret=[];
+        for(i=0; i<this.films.lenght; i++){
+            film=this.films[i];
+            if(film.date==null){
+                //E' giusto questo continue???
+                continue;
+            }
+            k=i;
+            for (j=i+1; j<this.films.lenght; j++){
+                if(this.films[i].date.diff(this.films[j].date)>0){
+                    film=this.films[j];
+                    k=j;
+                }
+            }
+            ret.push(film);
+            this.films.splice(k);
+        }
+        return ret;
+    };
+
+    this.deleteFilm(fId)=function(){
+        for(let i=0; i<this.films.length; i++){
+            if(this.films[i].id==fid){
+                this.films.splice(i);
+                break;
+            }
+        }
+        console.log(`No film with ID= ${fId}`);
+    };
+
+    this.resetWatchedFilms()=function(){
+        for(let i=0; i<this.films.length; i++){
+            if(this.films[i].score!=null){
+                this.films[i].score=null;
+            }
+        }
+    };
+
+    this.getRated()=function(){
+        return this.films.filter((e)=>e.score!=null);
+    };
 }
 
 const f1 = new Film(1, "Pulp Fiction", true, dayjs("03/10/2023"), 5);
@@ -49,3 +88,9 @@ fl.str();
 
 //Extension - Es2
 
+fl.sortByDate().str();
+fl.deleteFilm(3);
+fl.str();
+fl.getRated().str();
+fl.resetWatchedFilms();
+fl.str();
