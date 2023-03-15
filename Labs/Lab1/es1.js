@@ -57,10 +57,7 @@ function FilmLibrary(){
             }
         }
         if(found){
-            let v1=[], v2=[];
-            v1=this.films.slice(0, i);
-            v2=this.films.slice(i+1, this.films.length);
-            return v1.concat(v2);
+            this.films.splice(i, 1);
         }
         console.log(`No film with ID= ${fId}`);
     };

@@ -23,6 +23,8 @@ db.all(sql, (err,rows)=>{
 Se qua non aspettassi lui va avanti, quindi mi stampa
 ******** e non la risposta del server perchè essa è gestita in maniera asincrona
 */
+
+//Questa cosa si risolve con le promise.
 console.log('*************');
 for (let row of result) {
     console.log(row);
