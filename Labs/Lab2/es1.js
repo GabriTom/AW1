@@ -129,6 +129,18 @@ async function query(db, query, params){
     });
 }
 
+async function storeDel(db, stmt){
+    return new Promise((resolve, reject)=>{
+        let sql = db.run(stmt, null, function (err, ret){
+            if(err){
+                reject(err);
+            }else{
+                resolve(ret);
+            }
+        });
+    });
+}
+
 async function readAll(db){
     return query(db, "SELECT * FROM films");
 }
@@ -171,6 +183,7 @@ async function readOverSubstring(db, subStr){
 }
 
 async function main(){
+    //const fl=new FilmLibrary();
     //Es 1
     const db = new sqlite.Database('films.db', (err) => { if (err) throw err; });
     console.log("Tu no fa cassino: readALL");
@@ -193,8 +206,10 @@ async function main(){
     ret5.forEach((f)=>console.log(f.str()));
 
     //Es 2
-
-
+    storeDel(db, `INSERT INTO films (title, favorite, watchdate, rating) VALUES ${"Back to the future"}, ${1}, ${null}, ${5}`);
+    console.log("\nTu no fa cassino: readALL");
+    ret = await readAll(db);
+    ret.forEach((f)=>console.log(f.str()));
     db.close();
 }
 
