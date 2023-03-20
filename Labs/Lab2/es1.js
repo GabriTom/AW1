@@ -129,16 +129,19 @@ async function query(db, query, params){
     });
 }
 
-async function storeDel(db, stmt){
-    return new Promise((resolve, reject)=>{
-        let sql = db.run(stmt, null, function (err, ret){
-            if(err){
-                reject(err);
-            }else{
-                resolve(ret);
-            }
-        });
-    });
+async function storeDel(db, query){
+
+    const stmt = db.prepare(query);
+    for (let i = 0; i < 10; i++) {
+        stmt.run();
+    }
+    let res=stmt.finalize();
+
+    if(res=="SQLITE_OK"){
+        console.log(query+" done with SUCCESS!");
+    }else{
+        console.log(query+" has FAILED.");
+    }
 }
 
 async function readAll(db){
@@ -206,10 +209,13 @@ async function main(){
     ret5.forEach((f)=>console.log(f.str()));
 
     //Es 2
-    storeDel(db, `INSERT INTO films (title, favorite, watchdate, rating) VALUES ${"Back to the future"}, ${1}, ${null}, ${5}`);
+    storeDel(db, `INSERT INTO films VALUES (6, "Backtothefuture", 1, null, 5)`);
+    storeDel(db, `DELETE FROM films WHERE id=10`);
+    storeDel(db, `UPDATE films SET (7, "Hardcore", 0, null, 4) WHERE id=11`);
     console.log("\nTu no fa cassino: readALL");
     ret = await readAll(db);
     ret.forEach((f)=>console.log(f.str()));
+
     db.close();
 }
 
