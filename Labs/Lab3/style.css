@@ -1,0 +1,119 @@
+/*Images*/
+img{
+    filter: white;
+}
+
+/*Header*/
+div[name="header"] {
+    background-color: rgb(30, 80, 243);
+    padding-top: 1%;
+    padding-bottom: 1%;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+#srcBar{
+    margin-right: 5em;
+    width: 20em;
+    border-style: none;
+    border-radius: 4px;
+}
+
+#usrIcon{
+    margin-top: -0.5%;
+    width: 2em;
+    height: 2em;
+}
+
+.filter-white{
+    filter: invert(100%)
+}
+
+#filmIcon{
+    margin-top: -5%;
+}
+
+/*Main panel*/
+div[name="mainPanel"] {
+    display: flex;
+    height: 32.3em;
+}
+
+#leftP{
+    justify-content: flex-start;
+    width:25%;
+    background-color: rgb(246, 246, 246);
+}
+
+.nav-link.active{
+    color: white;
+    background-color: rgb(6, 43, 86);
+}
+
+ul{
+    padding-top: 2%;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+}
+
+#leftP li{
+    border-style: solid none none none;
+    border-width: 1px;
+    border-color: rgb(197, 197, 197);
+}
+
+.nav-link{
+    color: black;
+}
+
+#rightP{
+    justify-content: flex-end;
+    padding-top: 1%;
+    padding-left: 1%;
+    width:75%;
+}
+
+.tFilm{
+    width: 100%;
+}
+
+.tFilm tr{
+    height: 3em;
+    width: 100%;
+}
+
+.tFilm #fTitle#watched{
+    color: red;
+}
+
+.tFilm td{
+    border-style: solid none none none;
+    border-width: 1px;
+    border-color: rgb(197, 197, 197);
+    width: 20%;
+}
+
+.star{
+    filter: invert(50%);
+}
+
+.star.filled{
+    filter: invert(100%);
+}
+
+span[name="tFav"]{
+    color: blue;
+}
+
+/*Footer*/
+button[name="btnPlus"]{
+    background-color: rgb(30, 80, 243);
+    border: none;
+    color: white;
+    padding: 1em;
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    border-radius: 50%;
+}
