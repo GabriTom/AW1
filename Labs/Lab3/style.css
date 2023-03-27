@@ -64,7 +64,11 @@ ul{
 }
 
 .nav-link{
-    color: black;
+    color: black !important;
+}
+
+.nav-link.active{
+    color: white !important;
 }
 
 #rightP{
@@ -83,7 +87,7 @@ ul{
     width: 100%;
 }
 
-.tFilm #fTitle#watched{
+#fTitle#fav{
     color: red;
 }
 
@@ -107,13 +111,34 @@ span[name="tFav"]{
 }
 
 /*Footer*/
-button[name="btnPlus"]{
+/*button[name="btnPlus"]{
     background-color: rgb(30, 80, 243);
     border: none;
+    text-align: center;
     color: white;
     padding: 1em;
     position: fixed;
     bottom: 1em;
     right: 1em;
-    border-radius: 50%;
+    border-radius: 100%;
+    height: 3em;
+    width: 3em;
+    padding-bottom: 2em;
+    text-
+}*/
+
+button[name="btnPlus"]{
+    background-color: rgb(30, 80, 243);
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    font-size: 16px;
+    margin: 2px 2px;
+    border-radius: 100%;
+    width: 3.8em;
 }
