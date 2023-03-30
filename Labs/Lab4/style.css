@@ -87,7 +87,7 @@ ul{
     width: 100%;
 }
 
-#fTitle#fav{
+.fTitle.fav{
     color: red;
 }
 
