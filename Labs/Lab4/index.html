@@ -20,79 +20,19 @@
         <img id="usrIcon" src="./imgs/person-circle.svg" alt="person-circle" class="filter-white">
     </div>
     <div name="mainPanel">
-        <div id="leftP">
-            <ul name="leftMenu" class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link active" onclick=FilmLibrary.getAllFilms() href="#">All</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Favorites</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Best rated</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Seen last month</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Unseen</a>
-                </li>
-            </ul>
+        <div class="list-group" id="leftP" role="tablist">
+            <div id="innerLeftP">
+                <a class="list-group-item list-group-item-action active" role="tab" id="list-home-list" data-toggle="list" onclick="changeView('all')" href="#">All</a>
+                <a class="list-group-item list-group-item-action" role="tab" id="list-home-list" data-toggle="list" onclick="changeView('fav')" href="#">Favorites</a>
+                <a class="list-group-item list-group-item-action" role="tab" id="list-home-list" data-toggle="list" onclick="changeView('rate')" href="#">Best rated</a>
+                <a class="list-group-item list-group-item-action" role="tab" id="list-home-list" data-toggle="list" onclick="changeView('lm')" href="#">Seen last month</a>
+                <a class="list-group-item list-group-item-action" role="tab" id="list-home-list" data-toggle="list" onclick="changeView('unsees')" href="#">Unseen</a>
+            </div>
         </div>
         <div id="rightP">
-            <header><h2>All</h2></header>
+            <header><h2 id="rightPTitle"></h2></header>
             <div>
                 <ul id="rightMenu" class="nav flex-column">
-                    <!--<li class="nav-item">
-                        <table class="tFilm">
-                            <tr>
-                                <td id="fTitle fav">Pulp fiction</td>
-                                <td><input type="checkbox" checked="true" id="fFav"> Favorite</td>
-                                <td id="fwatchD">March 10, 2023</td>
-                                <td><span id="fRate" class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span></td>
-                            </tr>
-                        </table>
-                    </li>
-                    <li class="nav-item">
-                        <table class="tFilm">
-                            <tr>
-                                <td id="fTitle fav">21 grams</td>
-                                <td><input type="checkbox" checked="true"> Favorite</td>
-                                <td>March 17, 2023</td>
-                                <td><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star">&#10017;</span></td>
-                            </tr>
-                        </table>
-                    </li>
-                    <li class="nav-item">
-                        <table class="tFilm">
-                            <tr>
-                                <td id="fTitle">Star Wars</td>
-                                <td><input type="checkbox"> Favorite</td>
-                                <td></td>
-                                <td><span class="star">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span></td>
-                            </tr>
-                        </table>
-                    </li>
-                    <li class="nav-item">
-                        <table class="tFilm">
-                            <tr>
-                                <td id="fTitle">Matrix</td>
-                                <td><input type="checkbox"> Favorite</td>
-                                <td></td>
-                                <td><span class="star">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span></td>
-                            </tr>
-                        </table>
-                    </li>
-                    <li class="nav-item">
-                        <table class="tFilm">
-                            <tr>
-                                <td id="fTitle">Shrek</td>
-                                <td><input type="checkbox"> Favorite</td>
-                                <td>March 21, 2023</td>
-                                <td><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star filled">&#10017;</span><span class="star">&#10017;</span><span class="star">&#10017;</span></td>
-                            </tr>
-                        </table>
-                    </li>-->
                 </ul>
             </div>
         </div>
