@@ -212,9 +212,9 @@ function changeView(param){
 }
 
 function delFilm(fId){
-    let currentMenu=document.getElementsByClassName('active');
+    let currentMenu=document.getElementsByClassName('list-group-item-action active')[0];
     fl.deleteFilm(fId);
-    //come chiamo la funzione onclick del relativo menù???
+    currentMenu.click();
 }
 
 var leftP = document.getElementById("leftP");
