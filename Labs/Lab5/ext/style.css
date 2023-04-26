@@ -1,0 +1,24 @@
+#btnNewFilm{
+    background-color: rgb(13, 110, 253);
+    border: none;
+    color: white;
+    padding: 3vh;
+    position: fixed;
+    bottom: 1vh;
+    right: 1vh;
+    font-size: 16px;
+    border-radius: 100%;
+    width: 7vh;
+    height: 7vh;
+}
+
+#leftP{
+    background-color: rgb(246, 246, 246);
+}
+
+
+
+#leftP .active{
+    color: white;
+    background-color: rgb(8, 50, 96);
+}
