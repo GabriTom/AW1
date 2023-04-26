@@ -17,6 +17,7 @@ function Film(id, name, fav = false, date = null, rate = null) {
   }
 
   this.setFav = function(val) {
+    console.log(this.id);
     this.fav=val;
   }
 }
@@ -130,11 +131,11 @@ function FilmLibrary() {
   };
 }
 
-const f1 = new Film(1, "Pulp Fiction", true, dayjs("03/10/2023"), 5);
-const f2 = new Film(2, "21 Grams", true, dayjs("01/17/2023"), 4);
-const f3 = new Film(3, "Star Wars", false);
-const f4 = new Film(4, "Matrix", false);
-const f5 = new Film(5, "Shrek", false, dayjs("03/21/2023"), 3);
+let f1 = new Film(1, "Pulp Fiction", true, dayjs("03/10/2023"), 5);
+let f2 = new Film(2, "21 Grams", true, dayjs("01/17/2023"), 4);
+let f3 = new Film(3, "Star Wars", false);
+let f4 = new Film(4, "Matrix", false);
+let f5 = new Film(5, "Shrek", false, dayjs("03/21/2023"), 3);
 let fl = new FilmLibrary();
 fl.addNewFilm(f1);
 fl.addNewFilm(f2);
@@ -184,22 +185,16 @@ function MyRow(props){
     let rate="";
     let date;
 
-    let chk=<input type="checkbox" onChange={() => setIsChecked(() => !isChecked)} checked={isChecked}></input>
+    let chk=<input type="checkbox" checked={e.fav} onChange={() => setIsChecked(() => {
+        fl.films[e.id-1].fav=!e.fav;
+        return !isChecked;
+    })}></input>
 
 
-    console.log("Inside isChecked");
-    console.log(fl.films);
-    //e.setFav(isChecked);
-
-
-    if(isChecked){
-        console.log("Di qua passo eh");
+    if(e.fav){
         title=<td style={{color: 'red'}}>{e.name}</td>
-        fl.searchId(e.id).fav=true;
     }else{
-        console.log("anche qui passo eh");
         title=title=<td>{e.name}</td>
-        fl.searchId(e.id).fav=false;
     }
 
     if(!e.date){
@@ -246,6 +241,8 @@ function MyTitle(props){
 
 function MyTable(props){
     const filter = props.filter;
+    console.log("flflflflflflfl");
+    console.log(fl.films);
     let list;
     switch(filter){
         case 'all':{
@@ -253,11 +250,7 @@ function MyTable(props){
             break;
         }
         case 'fav':{
-            console.log("Inside FAV:");
-            console.log(fl.films);
             list=fl.getFavorites();
-            console.log("listaaaa");
-            console.log(list);
             break;
         }
         case 'bestRated':{
@@ -273,6 +266,8 @@ function MyTable(props){
             break;
         }
     }
+    console.log("list")
+    console.log(list);
     return (
     <div>
         <Table>
@@ -310,8 +305,7 @@ function MainContent() {
             </ListGroup>
             <Container className='align-self-start mt-3 ml-3'>
                 <MyTitle val={filter}/>
-                <MyTable filmList={fl} filter={filter}></MyTable>
-                {console.log("Outta table -> ")} {console.log(fl.films)}
+                <MyTable filter={filter}></MyTable>
             </Container>
         </Container>
     );
