@@ -94,41 +94,6 @@ function FilmLibrary() {
           }
       }
   };
-
-  this.getAllFilms = function(){
-      return this.films;
-  };
-
-  this.getFavorites = function(){
-      return this.films.filter(e => {
-          return e.fav==true;
-      });
-  };
-
-  this.getRated = function() {
-      return this.films.filter((e) => {
-          if (e != null && e.rate == 5) {
-              return e;
-          }
-      });
-  };
-
-  this.getSeenLastMonth = function() {
-      let mindate = dayjs().subtract(30, 'day').format('YYYY/MM/DD');
-      return this.films.filter((e) => {
-          if (dayjs(e.date).format('YYYY/MM/DD') > mindate && e.date!=null) {
-              return e;
-          }
-      });
-  };
-
-  this.getUnseen = function(){
-      return this.films.filter((e) => {
-          if (e.date == null) {
-              return e;
-          }
-      });
-  };
 }
 
 let f1 = new Film(1, "Pulp Fiction", true, dayjs("03/10/2023"), 5);
@@ -183,7 +148,7 @@ function MyRow(props){
     let title;
     let rate="";
     let date;
-    
+
     let chk=<input type="checkbox" checked={e.fav} onChange={() => {props.updateFav(e.id)}}></input>
 
     if(e.fav){
