@@ -179,17 +179,12 @@ function Header() {
 
 function MyRow(props){
     const {e} = props;
-    const [isChecked, setIsChecked] = useState(e.fav);
 
     let title;
     let rate="";
     let date;
-
-    let chk=<input type="checkbox" checked={e.fav} onChange={() => setIsChecked(() => {
-        fl.films[e.id-1].fav=!e.fav;
-        return !isChecked;
-    })}></input>
-
+    
+    let chk=<input type="checkbox" checked={e.fav} onChange={() => {props.updateFav(e.id)}}></input>
 
     if(e.fav){
         title=<td style={{color: 'red'}}>{e.name}</td>
@@ -198,9 +193,9 @@ function MyRow(props){
     }
 
     if(!e.date){
-        date=''
+        date='';
     }else{
-        date=dayjs(e.date).format("DD/MM/YYYY")
+        date=dayjs(e.date).format("DD/MM/YYYY");
     }
     for (let i = 0; i < 5; i++) {
         if (i < e.rate) {
@@ -241,39 +236,64 @@ function MyTitle(props){
 
 function MyTable(props){
     const filter = props.filter;
-    console.log("flflflflflflfl");
-    console.log(fl.films);
-    let list;
+
+    let filterList;
+
+    function updateFav(id){
+        console.log("update on id "+ id);
+        props.setList((oldList) => {
+            return oldList.map((e) => {
+                if(e.id===id){
+                    return {...e, fav: !e.fav};
+                }else{
+                    return e;
+                }
+            })
+        });
+    }
+
     switch(filter){
         case 'all':{
-            list=fl.getAllFilms();
+            filterList = (f) => {
+                return true;
+            }
             break;
         }
         case 'fav':{
-            list=fl.getFavorites();
+            filterList = (f) => {
+                console.log(f.str());
+                return f.fav;
+            }
             break;
         }
         case 'bestRated':{
-            list=fl.getRated();
+            filterList = (f) => {
+                return f.rate==5;
+            }
             break;
         }
         case 'seenLastMonth':{
-            list=fl.getSeenLastMonth();
+            filterList = (f) => {
+                let mindate = dayjs().subtract(30, 'day').format('YYYY/MM/DD');
+                if (dayjs(f.date).format('YYYY/MM/DD') > mindate && f.date!=null) {
+                    return f;
+                }
+            }
             break;
         }
         case 'unseen':{
-            list=fl.getUnseen();
+            filterList = (f) => {
+                return f.date==null;
+            }
             break;
         }
     }
-    console.log("list")
-    console.log(list);
     return (
     <div>
         <Table>
             <tbody>
                 {
-                    list.map((e, i) => <MyRow e={e} key={i}/>)
+                    props.list.filter(filterList).map((e, i) => <MyRow e={e} updateFav={updateFav} key={i}/>)
                 }
             </tbody>
         </Table>
@@ -284,6 +304,8 @@ function MyTable(props){
 function MainContent() {
     const initialFilter = "all";
     const [filter, setFilter] = useState(initialFilter);
+    const [list, setList] = useState(fl.films);
+
     return (
         <Container className='d-flex justify-content-between p-0 m-0' style={{height:"92.4%"}}>
             <ListGroup defaultActiveKey="#link1" id="leftP" className="p-3" style={{width: "50%", height:"100%"}} variant="flush">
@@ -305,7 +327,7 @@ function MainContent() {
             </ListGroup>
             <Container className='align-self-start mt-3 ml-3'>
                 <MyTitle val={filter}/>
-                <MyTable filter={filter}></MyTable>
+                <MyTable filter={filter} list={list} setList={setList}></MyTable>
             </Container>
         </Container>
     );
