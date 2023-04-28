@@ -1,16 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../ext/style.css";
-import {
-  Col,
-  Container,
-  Row,
-  Button,
-  Form,
-  Table,
-  Figure,
-  Navbar,
-  Modal,
-} from "react-bootstrap";
+import {Col, Container, Row, Button, Form, Table, Figure, Navbar, Modal} from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -25,11 +15,6 @@ function Film(id, name, fav = false, date = null, rate = null) {
   this.str = function () {
     return `${this.id} ${this.name}: Fav: ${this.fav} Viewed on ${this.date} Rated: ${this.rate}`;
   };
-
-  this.setFav = function (val) {
-    console.log(this.id);
-    this.fav = val;
-  };
 }
 
 function FilmLibrary() {
@@ -42,68 +27,6 @@ function FilmLibrary() {
   this.str = function () {
     for (let f of this.films) {
       console.log(f.str());
-    }
-  };
-
-  this.sortByDate = function () {
-    let retV = [],
-      retNV = [];
-    for (let f of this.films) {
-      if (f.date == null) {
-        retNV.push(f);
-      } else {
-        retV.push(f);
-      }
-    }
-    for (let i = 0; i < retV.length; i++) {
-      for (let j = i + 1; j < retV.length; j++) {
-        if (retV[i].date.diff(retV[j].date) > 0) {
-          let f = retV[j];
-          retV[j] = retV[i];
-          retV[i] = f;
-        }
-      }
-    }
-    return retV.concat(retNV);
-  };
-
-  this.searchId = function (fId) {
-    let i,
-      found = false;
-    for (i = 0; i < this.films.length; i++) {
-      if (this.films[i].id == fId) {
-        found = true;
-        break;
-      }
-    }
-    if (found) {
-      return this.films[i];
-    }
-    return null;
-  };
-
-  this.deleteFilm = function (fId) {
-    console.log(`ENtered with id = ${fId}`);
-    let i,
-      found = false;
-    for (i = 0; i < this.films.length; i++) {
-      if (this.films[i].id == fId) {
-        found = true;
-        break;
-      }
-    }
-    if (found) {
-      this.films.splice(i, 1);
-    }
-    console.log(`No film with ID= ${fId}`);
-  };
-
-  this.resetWatchedFilms = function () {
-    for (let i = 0; i < this.films.length; i++) {
-      if (this.films[i].score != null || this.films[i].date != null) {
-        this.films[i].score = null;
-        this.films[i].date = null;
-      }
     }
   };
 }
@@ -121,36 +44,38 @@ fl.addNewFilm(f4);
 fl.addNewFilm(f5);
 
 function App() {
-    const [list, setList] = useState(fl.films);
+  const [list, setList] = useState(fl.films);
 
   const addToList = (e) => {
+    console.log(e);
     setList((oldList) => [...oldList, e]);
-  }
+  };
 
   const editList = (e) => {
     setList((oldList) => {
-        console.log(e);
-        let i, found=false;
-        for(i=0; i<oldList.length; i++){
-            if(e.id==oldList[i].id){
-                found=true;
-                break;
-            }
+      console.log(e);
+      let i,
+        found = false;
+      for (i = 0; i < oldList.length; i++) {
+        if (e.id == oldList[i].id) {
+          found = true;
+          break;
         }
-        if(found){
-            oldList[i]=e;
-        }else{
-            console.log("WTF Non ha trovato il film da modificare ma WTF")
-        }
-        return [...oldList];
+      }
+      if (found) {
+        oldList[i] = e;
+      } else {
+        console.log("WTF Non ha trovato il film da modificare ma WTF");
+      }
+      return [...oldList];
     });
-  }
+  };
 
   return (
     <Container fluid className="p-0 m-0 ml-0" style={{ height: "100%" }}>
       <Header />
-      <MainContent list={list} editFilm={editList} setList={setList}/>
-      <Footer addToList={addToList}/>
+      <MainContent list={list} editFilm={editList} setList={setList} />
+      <Footer addToList={addToList} />
     </Container>
   );
 }
@@ -159,44 +84,18 @@ function Header() {
   return (
     <Navbar className="bg-primary text-white pt-3">
       <Container fluid>
-        <Row
-          className="d-flex justify-content-between"
-          style={{ width: "100%" }}
-        >
+        <Row className="d-flex justify-content-between" style={{ width: "100%" }}>
           <Col className="pl-0">
             <Figure>
-              <Figure.Image
-                width={22}
-                height={22}
-                style={{ paddingTop: "3px", filter: "invert(1)" }}
-                alt="Film library"
-                src="../ext/imgs/collection-play.svg"
-              />
-            </Figure>{" "}
-            Film Library
+              <Figure.Image width={22} height={22} style={{ paddingTop: "3px", filter: "invert(1)" }} alt="Film library" src="../ext/imgs/collection-play.svg"/>
+            </Figure>{" "}Film Library
           </Col>
           <Col>
-            <input
-              type="text"
-              placeholder="Search"
-              style={{ width: "100%" }}
-            ></input>
+            <input type="text" placeholder="Search" style={{ width: "100%" }} ></input>
           </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              paddingRight: "0px",
-            }}
-          >
+          <Col style={{display: "flex", justifyContent: "flex-end", paddingRight: "0px"}}>
             <Figure>
-              <Figure.Image
-                width={22}
-                height={22}
-                style={{ paddingTop: "3px", filter: "invert(1)" }}
-                alt="User log"
-                src="../ext/imgs/person-circle.svg"
-              />
+              <Figure.Image width={22} height={22} style={{ paddingTop: "3px", filter: "invert(1)" }} alt="User log" src="../ext/imgs/person-circle.svg"/>
             </Figure>
           </Col>
         </Row>
@@ -205,160 +104,24 @@ function Header() {
   );
 }
 
-function MyRow(props) {
-  const { e } = props;
-
-  let scoreEdit
-
-  const [show, setShow] = useState(false);
-  /*Form fileds state*/
-  const [titleE, setTitle] = useState(e.name);
-  const [favE, setFav] = useState(e.fav);
-  const [wdateE, setWDate] = useState(e.date);
-  const [scoreE, setScore] = useState(e.rate);
-
-  if(scoreE==null){
-    scoreEdit=0;
-  }else{
-    scoreEdit=scoreE;
-  }
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const handleTitle = (event) => setTitle(event.target.value);
-  const handleFav = (event) => setFav(event.target.value);
-  const handleWDate = (event) => setWDate(event.target.value);
-  const handleScore = (event) => setScore(event.target.value);
-
-  let title;
-  let rate = "";
-  let date;
-
-  let chk = (
-    <input
-      type="checkbox"
-      checked={e.fav}
-      onChange={() => {
-        props.updateFav(e.id);
-      }}
-    ></input>
-  );
-
-  if (e.fav) {
-    title = (
-      <td style={{ color: "red" }}>
-        {e.name}
-      </td>
-    );
-  } else {
-    title = (
-      <td>
-        {e.name}
-      </td>
-    );
-  }
-
-  if (!e.date) {
-    date = "";
-  } else {
-    date = dayjs(e.date).format("DD/MM/YYYY");
-  }
-  for (let i = 0; i < 5; i++) {
-    if (i < e.rate) {
-      rate = rate.concat("\u2605");
-    } else {
-      rate = rate.concat("\u2606");
-    }
-  }
-
-  function handleEditSubmit(event){
-    let ok=true;
-    let watchDate, varFav, varScore;
-    
-    /*Checking fields domain*/
-    if(scoreE<0 || scoreE>5){
-        ok=false;
-    }else if(scoreE==NaN){
-        //varScore=0;
-    }
-    /*if(favE=='on'){
-        varFav=true;
-    }else{
-        varFav=false;
-    }*/
-    if(titleE==""){
-        ok=false;
-    }
-    if(wdateE==""){
-        watchDate=null;
-    }else{
-        watchDate=dayjs(wdateE).format("MM/DD/YYYY")
-    }
-    if(ok){
-        const e = {
-            id: props.e.id,
-            name: titleE,
-            fav: props.e.fav,
-            date: watchDate,
-            rate: parseInt(scoreE)
-        }
-        console.log(e);
-        props.edit(e);
-        handleClose();
-    }
-  }
+function MainContent(props) {
+  const initialFilter = "all";
+  const [filter, setFilter] = useState(initialFilter);
 
   return (
-    <>
-    <Modal show={show} onHide={handleClose}>
-      <Form onSubmit={handleEditSubmit}>
-        <Modal.Header closeButton>
-          <Modal.Title>New Film</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" id="txtTitle" defaultValue={titleE} required={true} onChange={handleTitle} autoFocus/>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Watch Date</Form.Label>
-              <div className="input-group mb-2">
-                <div className="input-group-prepend">
-                  <div className="input-group-text">
-                    <input type="checkbox" id="btnFav" checked={favE} onChange={handleFav}></input>
-                  </div>
-                </div>
-                <input type="date" className="form-control" id="txtDate" max={dayjs().format("YYYY-MM-DD")} defaultValue={dayjs(wdateE).format("YYYY-MM-DD")} onChange={handleWDate}></input>
-              </div>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Score</Form.Label>
-                <div className="form-outline">
-                    <input type="number" min="0" max="5" step="1" defaultValue={scoreEdit} id="txtRate" className="form-control form-icon-trailing"  onChange={handleScore}/>
-                </div>
-            </Form.Group>
-          
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Modal.Footer>
-        </Form>
-      </Modal>
-    <tr>
-        <td><img src="../ext/imgs/trash3.svg" alt="trash bin" onClick={() => {props.delete(e.id);}}></img></td>
-        <td><img src="../ext/imgs/pencil.svg" alt="pencil" onClick={handleShow}></img></td>
-      {title}
-      <td>{chk}</td>
-      <td>{date}</td>
-      <td>{rate}</td>
-    </tr>
-    </>
+    <Container className="d-flex justify-content-between p-0 m-0" style={{ height: "92.4%" }}>
+      <ListGroup defaultActiveKey="#link1" id="leftP" className="p-3" style={{ width: "50%", height: "100%" }} variant="flush">
+        <ListGroup.Item action href="#link1" className="leftP item" onClick={() => setFilter(initialFilter)}>All</ListGroup.Item>
+        <ListGroup.Item action href="#link2" className="leftP item" onClick={() => setFilter("fav")}>Favourites</ListGroup.Item>
+        <ListGroup.Item action href="#link3" className="leftP item" onClick={() => setFilter("bestRated")}>Best rated</ListGroup.Item>
+        <ListGroup.Item action href="#link4" className="leftP item" onClick={() => setFilter("seenLastMonth")}>Seen last month</ListGroup.Item>
+        <ListGroup.Item action href="#link5" className="leftP item" onClick={() => setFilter("unseen")}>Unseen</ListGroup.Item>
+      </ListGroup>
+      <Container className="align-self-start mt-3 ml-3">
+        <MyTitle val={filter}/>
+        <MyTable filter={filter} editFilm={props.editFilm} list={props.list} setList={props.setList}></MyTable>
+      </Container>
+    </Container>
   );
 }
 
@@ -384,9 +147,7 @@ function MyTitle(props) {
 
 function MyTable(props) {
   const filter = props.filter;
-
-  let filterList;
-  let ret;
+  let filterList, displayList, ret;
 
   function deleteRow(id) {
     props.setList((oldList) => {
@@ -401,7 +162,7 @@ function MyTable(props) {
       if (found) {
         const x = oldList.splice(i, 1);
       }
-      return oldList.map((e) => e); //PERCHE' qui devo per forza usare map?????
+      return [...oldList];
     });
   }
 
@@ -452,15 +213,15 @@ function MyTable(props) {
       break;
     }
   }
-  
-  let displayList = props.list.filter(filterList);
+
+  displayList = props.list.filter(filterList)
+
   if (displayList.length == 0) {
     ret = "No films found.";
   } else {
-    ret = displayList.map((e, i) => (
-      <MyRow e={e} delete={deleteRow} edit={props.editFilm} updateFav={updateFav} key={i} />
-    ));
+    ret = displayList.map((e, i) => (<MyRow e={e} delete={deleteRow} edit={props.editFilm} updateFav={updateFav} key={i}/>));
   }
+
   return (
     <div>
       <Table>
@@ -470,127 +231,202 @@ function MyTable(props) {
   );
 }
 
-function MainContent(props) {
-  const initialFilter = "all";
-  const [filter, setFilter] = useState(initialFilter);
+function MyRow(props) {
+  const { e } = props;
 
-  return (
-    <Container
-      className="d-flex justify-content-between p-0 m-0"
-      style={{ height: "92.4%" }}
-    >
-      <ListGroup
-        defaultActiveKey="#link1"
-        id="leftP"
-        className="p-3"
-        style={{ width: "50%", height: "100%" }}
-        variant="flush"
-      >
-        <ListGroup.Item
-          action
-          href="#link1"
-          className="leftP item"
-          onClick={() => setFilter(initialFilter)}
-        >
-          All
-        </ListGroup.Item>
-        <ListGroup.Item
-          action
-          href="#link2"
-          className="leftP item"
-          onClick={() => setFilter("fav")}
-        >
-          Favourites
-        </ListGroup.Item>
-        <ListGroup.Item
-          action
-          href="#link3"
-          className="leftP item"
-          onClick={() => setFilter("bestRated")}
-        >
-          Best rated
-        </ListGroup.Item>
-        <ListGroup.Item
-          action
-          href="#link4"
-          className="leftP item"
-          onClick={() => setFilter("seenLastMonth")}
-        >
-          Seen last month
-        </ListGroup.Item>
-        <ListGroup.Item
-          action
-          href="#link5"
-          className="leftP item"
-          onClick={() => setFilter("unseen")}
-        >
-          Unseen
-        </ListGroup.Item>
-      </ListGroup>
-      <Container className="align-self-start mt-3 ml-3">
-        <MyTitle val={filter} />
-        <MyTable filter={filter} editFilm={props.editFilm} list={props.list} setList={props.setList}></MyTable>
-      </Container>
-    </Container>
-  );
-}
+  let scoreEdit, title, rate="", date;
 
-function Footer(props) {
-    let btn;
+  //States used to display modal
   const [show, setShow] = useState(false);
-  /*Form fileds state*/
-  const [title, setTitle] = useState('');
-  const [fav, setFav] = useState(false);
-  const [wdate, setWDate] = useState('');
-  const [score, setScore] = useState(0);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  /*Form fields state*/
+  const [titleE, setTitle] = useState(e.name);
+  const [favE, setFav] = useState(e.fav);
+  const [wdateE, setWDate] = useState(e.date);
+  const [scoreE, setScore] = useState(e.rate);
 
   const handleTitle = (event) => setTitle(event.target.value);
   const handleFav = (event) => setFav(event.target.value);
   const handleWDate = (event) => setWDate(event.target.value);
   const handleScore = (event) => setScore(event.target.value);
 
-  if(show){
-    btn=<Container fluid><Button id="btnNewFilm" style={{ display: "none" }} onClick={handleShow}>+</Button></Container>
-  }else{
-    btn=<Container fluid><Button id="btnNewFilm" onClick={handleShow}>+</Button></Container>
+  if (scoreE == null) {
+    scoreEdit = 0;
+  } else {
+    scoreEdit = scoreE;
   }
 
-  function handleSubmit(event){
-    let ok=true;
-    let watchDate, varFav, varScore;
-    
+  let chk = (
+    <input type="checkbox" checked={e.fav} onChange={() => {props.updateFav(e.id);}}></input>
+  );
+
+  if (e.fav) {
+    title = <td style={{color: "red"}}>{e.name}</td>;
+  } else {
+    title = <td>{e.name}</td>;
+  }
+
+  if (!e.date) {
+    date = "";
+  } else {
+    date = dayjs(e.date).format("DD/MM/YYYY");
+  }
+  for (let i = 0; i < 5; i++) {
+    if (i < e.rate) {
+      rate = rate.concat("\u2605");
+    } else {
+      rate = rate.concat("\u2606");
+    }
+  }
+
+  function handleEditSubmit() {
+    let ok = true, watchDate;
+
     /*Checking fields domain*/
-    if(score<0 || score>5){
-        ok=false;
-    }else if(score==NaN){
-        //varScore=0;
+    if (scoreE < 0 || scoreE > 5) {
+      ok = false;
+    } else if (scoreE == NaN) {
+      //varScore=0;
     }
-    if(fav=='on'){
-        varFav=true;
-    }else{
-        varFav=false;
+    if (favE == "on") {
+      varFav = true;
+    } else {
+      varFav = false;
     }
-    if(title==""){
-        ok=false;
+    if (titleE == "") {
+      ok = false;
     }
-    if(wdate==""){
-        watchDate=null;
-    }else{
-        watchDate=dayjs(wdate).format("MM/DD/YYYY")
+    if (wdateE == "" || wdateE == null) {
+      watchDate = "";
+    } else {
+      watchDate = dayjs(wdateE).format("MM/DD/YYYY");
     }
-    if(ok){
-        const e = {
-            name: title,
-            fav: varFav,
-            date: watchDate,
-            rate: parseInt(score)
-        }
-        console.log(e);
-        props.addToList(e);
-        handleClose();
+    if (ok) {
+      const e = {
+        id: props.e.id,
+        name: titleE,
+        fav: favE,
+        date: watchDate,
+        rate: parseInt(scoreE),
+      };
+      console.log(e);
+      props.edit(e);
+      handleClose();
+    }
+  }
+
+  return (
+    <>
+      <Modal show={show} onHide={handleClose}>
+        <Form onSubmit={handleEditSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title>New Film</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control type="text" defaultValue={titleE} required={true} onChange={handleTitle} autoFocus/>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Watch Date</Form.Label>
+              <div className="input-group mb-2">
+                <div className="input-group-prepend">
+                  <div className="input-group-text">
+                    <input type="checkbox" checked={favE} onChange={handleFav}></input>
+                  </div>
+                </div>
+                <input type="date" className="form-control" max={dayjs().format("YYYY-MM-DD")} defaultValue={dayjs(wdateE).format("YYYY-MM-DD")} onChange={handleWDate}></input>
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Score</Form.Label>
+              <div className="form-outline">
+                <input type="number" min="0" max="5" step="1" defaultValue={scoreEdit} className="form-control form-icon-trailing" onChange={handleScore}/>
+              </div>
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>Close</Button>
+            <Button variant="primary" type="submit">Submit</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+      <tr>
+        <td><img src="../ext/imgs/trash3.svg" alt="trash bin" onClick={() => {props.delete(e.id);}}></img></td>
+        <td><img src="../ext/imgs/pencil.svg" alt="pencil" onClick={handleShow}></img></td>
+        {title}
+        <td>{chk}</td>
+        <td>{date}</td>
+        <td>{rate}</td>
+      </tr>
+    </>
+  );
+}
+
+function Footer(props) {
+  let btn;
+  //Statse used to display input form
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  /*Form fileds state*/
+  const [title, setTitle] = useState("");
+  const [fav, setFav] = useState(false);
+  const [wdate, setWDate] = useState("");
+  const [score, setScore] = useState(0);
+
+  const handleTitle = (event) => setTitle(event.target.value);
+  const handleFav = (event) => setFav(event.target.value);
+  const handleWDate = (event) => setWDate(event.target.value);
+  const handleScore = (event) => setScore(event.target.value);
+
+ 
+
+  if (show) {
+    btn = (<Container fluid><Button id="btnNewFilm" style={{ display: "none" }} onClick={handleShow}>+</Button></Container>);
+  } else {
+    btn = (<Container fluid><Button id="btnNewFilm" onClick={handleShow}>+</Button></Container>);
+  }
+
+  function handleSubmit(event) {
+    let ok = true;
+    let watchDate, varFav, varScore;
+
+    /*Checking fields domain*/
+    if (score < 0 || score > 5) {
+      ok = false;
+    } else if (score == NaN) {
+      //varScore=0;
+    }
+    if (fav == "on") {
+      varFav = true;
+    } else {
+      varFav = false;
+    }
+    if (title == "") {
+      ok = false;
+    }
+    if (wdate == "") {
+      watchDate = null;
+    } else {
+      watchDate = dayjs(wdate).format("MM/DD/YYYY");
+    }
+    if (ok) {
+      const e = {
+        id: fl.length,
+        name: title,
+        fav: varFav,
+        date: watchDate,
+        rate: parseInt(score),
+      };
+      console.log(e);
+      props.addToList(e);
+      handleClose();
     }
   }
 
@@ -598,42 +434,41 @@ function Footer(props) {
     <>
       {btn}
       <Modal show={show} onHide={handleClose}>
-      <Form onSubmit={handleSubmit}>
-        <Modal.Header closeButton>
-          <Modal.Title>New Film</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title>New Film</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Form.Group className="mb-3">
               <Form.Label>Title</Form.Label>
-              <Form.Control type="text" id="txtTitle" required={true} onChange={handleTitle} autoFocus/>
+              <Form.Control type="text" required={true} onChange={handleTitle}autoFocus/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Watch Date</Form.Label>
               <div className="input-group mb-2">
                 <div className="input-group-prepend">
                   <div className="input-group-text">
-                    <input type="checkbox" id="btnFav"  onChange={handleFav}></input>
+                    <input type="checkbox" onChange={handleFav}></input>
                   </div>
                 </div>
-                <input type="date" className="form-control" id="txtDate" max={dayjs().format("YYYY-MM-DD")}  onChange={handleWDate}></input>
+                <input type="date" className="form-control" max={dayjs().format("YYYY-MM-DD")} onChange={handleWDate}></input>
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Score</Form.Label>
-                <div className="form-outline">
-                    <input type="number" min="0" max="5" step="1" defaultValue="0" id="txtRate" className="form-control form-icon-trailing"  onChange={handleScore}/>
-                </div>
+              <div className="form-outline">
+                <input type="number" min="0" max="5" defaultValue="0" className="form-control form-icon-trailing" onChange={handleScore}/>
+              </div>
             </Form.Group>
-          
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal>
     </>
