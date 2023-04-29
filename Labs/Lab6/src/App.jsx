@@ -36,18 +36,27 @@ let f2 = new Film(2, "21 Grams", true, dayjs("01/17/2023"), 4);
 let f3 = new Film(3, "Star Wars", false);
 let f4 = new Film(4, "Matrix", false);
 let f5 = new Film(5, "Shrek", false, dayjs("03/21/2023"), 3);
+let f6 = new Film(6, "sas", false);
+let f7 = new Film(7, "ses", false);
+let f8 = new Film(8, "sis", false,"",2);
+let f9 = new Film(9, "siuuuuuus", false,"",2);
 let fl = new FilmLibrary();
 fl.addNewFilm(f1);
 fl.addNewFilm(f2);
 fl.addNewFilm(f3);
 fl.addNewFilm(f4);
 fl.addNewFilm(f5);
+fl.addNewFilm(f6);
+fl.addNewFilm(f7);
+fl.addNewFilm(f8);
+fl.addNewFilm(f9);
 
 function App() {
   const [list, setList] = useState(fl.films);
 
   const addToList = (e) => {
-    console.log(e);
+    let f = new Film(e.id, e.name, e.fav, e.date, e.rate);
+    //fl.addNewFilm(f);
     setList((oldList) => [...oldList, e]);
   };
 
@@ -75,7 +84,7 @@ function App() {
     <Container fluid className="p-0 m-0 ml-0" style={{ height: "100%" }}>
       <Header />
       <MainContent list={list} editFilm={editList} setList={setList} />
-      <Footer addToList={addToList} />
+      <Footer list={list} addToList={addToList} />
     </Container>
   );
 }
@@ -107,6 +116,11 @@ function Header() {
 function MainContent(props) {
   const initialFilter = "all";
   const [filter, setFilter] = useState(initialFilter);
+
+  /*function updateList(filter){
+    setFilter(filter);
+
+  }*/
 
   return (
     <Container className="d-flex justify-content-between p-0 m-0" style={{ height: "92.4%" }}>
@@ -214,12 +228,12 @@ function MyTable(props) {
     }
   }
 
-  displayList = props.list.filter(filterList)
+  displayList = props.list.filter(filterList);
 
   if (displayList.length == 0) {
     ret = "No films found.";
   } else {
-    ret = displayList.map((e, i) => (<MyRow e={e} delete={deleteRow} edit={props.editFilm} updateFav={updateFav} key={i}/>));
+    ret = displayList.map((e) => (<MyRow e={e} delete={deleteRow} edit={props.editFilm} updateFav={updateFav} key={e.id}/>));
   }
 
   return (
@@ -234,7 +248,7 @@ function MyTable(props) {
 function MyRow(props) {
   const { e } = props;
 
-  let scoreEdit, title, rate="", date;
+  let scoreEdit, title, rate="", date, varFav=e.fav;
 
   //States used to display modal
   const [show, setShow] = useState(false);
@@ -244,12 +258,12 @@ function MyRow(props) {
 
   /*Form fields state*/
   const [titleE, setTitle] = useState(e.name);
-  const [favE, setFav] = useState(e.fav);
+  const [favE, setFav] = useState(varFav);
   const [wdateE, setWDate] = useState(e.date);
   const [scoreE, setScore] = useState(e.rate);
 
   const handleTitle = (event) => setTitle(event.target.value);
-  const handleFav = (event) => setFav(event.target.value);
+  const handleFav = (event) => setFav(event.target.checked);
   const handleWDate = (event) => setWDate(event.target.value);
   const handleScore = (event) => setScore(event.target.value);
 
@@ -285,34 +299,42 @@ function MyRow(props) {
   function handleEditSubmit() {
     let ok = true, watchDate;
 
+    let titleVal, favVal, dateVal, scoreVal;
+
+    titleVal=document.getElementById("txtTitle").value;
+    favVal=document.getElementById("chkFavEdit").checked;
+    dateVal=document.getElementById("txtDate").value;
+    scoreVal=document.getElementById("txtScore").value;
+
     /*Checking fields domain*/
-    if (scoreE < 0 || scoreE > 5) {
+    if (scoreVal < 0 || scoreVal > 5) {
       ok = false;
-    } else if (scoreE == NaN) {
+    } else if (scoreVal == NaN) {
       //varScore=0;
     }
-    if (favE == "on") {
-      varFav = true;
-    } else {
-      varFav = false;
-    }
-    if (titleE == "") {
+    
+    if (titleVal == "") {
       ok = false;
     }
-    if (wdateE == "" || wdateE == null) {
+    if (dateVal == "" || dateVal == null) {
       watchDate = "";
     } else {
-      watchDate = dayjs(wdateE).format("MM/DD/YYYY");
+      watchDate = dayjs(dateVal).format("MM/DD/YYYY");
     }
     if (ok) {
+      handleTitle;
+      props.updateFav();
+      handleWDate;
+      handleScore;
+
       const e = {
         id: props.e.id,
-        name: titleE,
-        fav: favE,
+        name: titleVal,
+        fav: favVal,
         date: watchDate,
-        rate: parseInt(scoreE),
+        rate: parseInt(scoreVal),
       };
-      console.log(e);
+
       props.edit(e);
       handleClose();
     }
@@ -328,23 +350,23 @@ function MyRow(props) {
           <Modal.Body>
             <Form.Group className="mb-3">
               <Form.Label>Title</Form.Label>
-              <Form.Control type="text" defaultValue={titleE} required={true} onChange={handleTitle} autoFocus/>
+              <Form.Control type="text" defaultValue={e.name} id="txtTitle" required={true} autoFocus/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Watch Date</Form.Label>
               <div className="input-group mb-2">
                 <div className="input-group-prepend">
                   <div className="input-group-text">
-                    <input type="checkbox" checked={favE} onChange={handleFav}></input>
+                    <input type="checkbox" id="chkFavEdit" defaultChecked={e.fav} onChange={handleFav}></input>
                   </div>
                 </div>
-                <input type="date" className="form-control" max={dayjs().format("YYYY-MM-DD")} defaultValue={dayjs(wdateE).format("YYYY-MM-DD")} onChange={handleWDate}></input>
+                <input type="date" id="txtDate" className="form-control" max={dayjs().format("YYYY-MM-DD")} defaultValue={dayjs(e.date).format("YYYY-MM-DD")}></input>
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Score</Form.Label>
               <div className="form-outline">
-                <input type="number" min="0" max="5" step="1" defaultValue={scoreEdit} className="form-control form-icon-trailing" onChange={handleScore}/>
+                <input type="number" id="txtScore" min="0" max="5" step="1" defaultValue={e.rate} className="form-control form-icon-trailing"/>
               </div>
             </Form.Group>
           </Modal.Body>
@@ -418,7 +440,7 @@ function Footer(props) {
     }
     if (ok) {
       const e = {
-        id: fl.length,
+        id: props.list.length+1,
         name: title,
         fav: varFav,
         date: watchDate,
