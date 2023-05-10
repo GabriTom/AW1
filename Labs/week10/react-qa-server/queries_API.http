@@ -1,0 +1,18 @@
+GET http://localhost:3001/api/questions HTTP/1.1
+###
+GET http://localhost:3001/api/questions/1
+###
+GET http://localhost:3001/api/questions/1/answers
+###
+POST http://localhost:3001/api/answers
+
+Content-Type: application/json
+
+{
+    "text":"Mao tse tung pezzo di panda",
+    "respondent": "iomo",
+    "score": "5",
+    "date": "2023-08-08",
+    "questionId": 27
+}
+###
